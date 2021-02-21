@@ -5,6 +5,11 @@ public class GameBoardView {
 
     public static void main (String[] args)
     {
+        drawPanel();
+
+    }
+
+    public static void drawPanel(){
         //Create a new Frame(GameBoard)
         JFrame frame = new JFrame("Minesweeper");
         frame.setVisible(true);
@@ -27,7 +32,6 @@ public class GameBoardView {
         panel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         frame.add(panel);
         frame.setVisible(true);
-
     }
 
     }
