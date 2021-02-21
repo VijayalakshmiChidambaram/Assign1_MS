@@ -2,13 +2,11 @@ package main;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
-public class GameBoardView {
+public class GameBoardView<cells> {
 
-    private static List<JCellsButton> cells = new ArrayList<>();
+    private static JCellsButton [][] cells = new JCellsButton[10][10];
 
     public static void main(String[] args) {
         drawPanel();
@@ -19,9 +17,10 @@ public class GameBoardView {
     {
         Random r = new Random();
         for(int i = 0; i<n; ++i){
-            int index = r.nextInt(100);
-            JCellsButton button = cells.get(index);
-            button.ismined = true;
+            int row = r.nextInt(9);
+            int col = r.nextInt(9);
+            JCellsButton button = cells[row][col];
+            button.isMined = true;
         }
     }
 
@@ -37,9 +36,9 @@ public class GameBoardView {
         panel.setLayout(new GridLayout(10, 10, 0, 0));
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                JCellsButton button = new JCellsButton();
+                JCellsButton button = new JCellsButton(i,j);
                 button.addMouseListener(button);
-                cells.add(button);
+                cells[i][j] = button;
                 panel.add(button);
                 button.setBackground(Color.lightGray);
             }

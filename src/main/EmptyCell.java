@@ -1,19 +1,9 @@
 package main;
 
-public class EmptyCell implements CellImplementation{
+public class EmptyCell extends JCellsButton {
 
-    @Override
-    public void setCellState(CellState cellstate) {
-
+    EmptyCell(int x, int y) {
+        super(x, y);
     }
 
-    @Override
-    public CellState getCellState() {
-        return null;
-    }
-
-    @Override
-    public void getCellPositon(int x, int y) {
-
-    }
 }

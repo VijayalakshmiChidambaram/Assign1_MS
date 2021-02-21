@@ -8,15 +8,17 @@ public class JCellsButton extends JButton implements MouseListener {
     CellState cellstate;
     int positionX;
     int positionY;
-    boolean ismined;
+    int adjacentMinedCellCount;
+    boolean isMined;
     private boolean pressed = false;
 
-    JCellsButton()
+    JCellsButton(int x, int y)
     {
-        CellState cellstate = CellState.UNSEALED;
-        int positionX = this.getX();
-        int positionY = this.getY();
-        ismined = false;
+        this.cellstate = CellState.UNSEALED;
+        this.positionX = x;
+        this.positionY = y;
+        this.adjacentMinedCellCount = 0;
+        this.isMined = false;
     }
 
     @Override
@@ -52,7 +54,7 @@ public class JCellsButton extends JButton implements MouseListener {
                 else {
                     btn.enable();
                     btn.cellstate = CellState.EXPOSED;
-                    if (btn.ismined) {
+                    if (btn.isMined) {
                         btn.setIcon(new ImageIcon("/Users/ruchishah/Downloads/sd_svn/assign1/Assign1_MS/images/mines.jpg"));
                         btn.setSize(30,30);
                     }

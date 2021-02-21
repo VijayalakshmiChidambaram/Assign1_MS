@@ -1,19 +1,9 @@
 package main;
 
-public class MinedCell implements CellImplementation {
+public class MinedCell extends JCellsButton {
 
-    @Override
-    public void setCellState(CellState cellstate) {
-
+    MinedCell(int x, int y) {
+        super(x, y);
     }
 
-    @Override
-    public CellState getCellState() {
-        return CellState.EXPOSED;
-    }
-
-    @Override
-    public void getCellPositon(int x, int y) {
-
-    }
 }
