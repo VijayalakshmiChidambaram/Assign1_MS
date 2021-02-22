@@ -1,15 +1,18 @@
 package main;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.util.Random;
 
 public class GameBoardView<cells> {
 
+    private JFrame frame;
     private static JCellsButton [][] cells = new JCellsButton[10][10];
 
     public static void main(String[] args) {
-        drawPanel();
+        GameBoardView game = new GameBoardView();
+        game.gameStatus();
         generateRandomMinedCells(20);
     }
 
@@ -24,9 +27,9 @@ public class GameBoardView<cells> {
         }
     }
 
-    public static void drawPanel() {
+    public GameBoardView() {
         //Create a new Frame(GameBoard)
-        JFrame frame = new JFrame("Minesweeper");
+        frame = new JFrame("Minesweeper");
         frame.setVisible(true);
         frame.setSize(350, 350);
         frame.setLocationRelativeTo(null);
@@ -48,5 +51,17 @@ public class GameBoardView<cells> {
         frame.add(panel);
         frame.setVisible(true);
     }
+    public void gameStatus()
+    {
+        JPanel statusPanel = new JPanel();
+        statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        frame.add(statusPanel, BorderLayout.SOUTH);
+        statusPanel.setPreferredSize(new Dimension(frame.getWidth(), 30));
+        statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
+        JLabel statusLabel = new JLabel("Status");
+        statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        statusPanel.add(statusLabel);
 
+        frame.setVisible(true);
+    }
 }
