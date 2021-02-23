@@ -5,27 +5,26 @@ import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.util.Random;
 
-public class GameBoardView<cells> {
+public class GameBoardView {
 
     private JFrame frame;
-    private static JCellsButton [][] cells = new JCellsButton[10][10];
+    private JCellsButton [][] allCells = new JCellsButton[10][10];
 
     public static void main(String[] args) {
         GameBoardView game = new GameBoardView();
         game.score();
         game.gameStatus();
-        generateRandomMinedCells(20);
     }
 
-    private static void generateRandomMinedCells(int n)
+    public boolean isValidCellPosition(int row, int col)
     {
-        Random r = new Random();
-        for(int i = 0; i<n; ++i){
-            int row = r.nextInt(9);
-            int col = r.nextInt(9);
-            JCellsButton button = cells[row][col];
-            button.isMined = true;
-        }
+        if(row < 0 || col < 0 || row > 9 || col > 9)
+            return false;
+        return true;
+    }
+
+    private boolean isAdjMinedCell(JCellsButton cell) {
+        return cell.isMined;
     }
 
     //Create a new Frame(GameBoard) and grid
@@ -37,15 +36,62 @@ public class GameBoardView<cells> {
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel panel = new JPanel();
+
         //Creating a matrix of 100 cells
         panel.setLayout(new GridLayout(10, 10, 0, 0));
+
+        //Randomly generate Mined cells
+        Random r = new Random();
+        for(int i = 0; i<20; ++i){
+            int row = r.nextInt(9);
+            int col = r.nextInt(9);
+            MinedCell minedCell = new MinedCell(row,col);
+            minedCell.addMouseListener(minedCell);
+            minedCell.setBackground(Color.lightGray);
+            allCells[row][col] = minedCell;
+        }
+
+        //Calculate the Adjacent cells and set all other cells to Empty cells
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                JCellsButton button = new JCellsButton(i,j);
-                button.addMouseListener(button);
-                cells[i][j] = button;
-                panel.add(button);
-                button.setBackground(Color.lightGray);
+                //Set only those locations that are not mined cells
+                if(allCells[i][j]==null) {
+                    int count = 0;
+                    for(int k=-1; k<2; ++k){
+                        for(int l=-1; l<2; ++l){
+                            //Validation check for cell index going out of bounds
+                            if(isValidCellPosition(i+k, j+l)){
+                                if(allCells[i+k][j+l] == null){
+                                    //Set any null locations to Empty cells
+                                    EmptyCell emptyCell = new EmptyCell((i+k),(j+l));
+                                    emptyCell.addMouseListener(emptyCell);
+                                    emptyCell.setBackground(Color.lightGray);
+                                    allCells[i+k][j+l] = emptyCell;
+                                }
+                                else{
+                                    if(isAdjMinedCell(allCells[i+k][j+l])){
+                                        count += 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    //If found any adjacent mined cells, set the count on the cell
+                    if(count>0){
+                        AdjacentCell adjacentCell = new AdjacentCell(i,j);
+                        adjacentCell.adjacentMinedCellCount = count;
+                        adjacentCell.addMouseListener(adjacentCell);
+                        adjacentCell.setBackground(Color.lightGray);
+                        allCells[i][j] = adjacentCell;
+                    }
+                }
+            }
+        }
+
+        //Add all the cells to the panel
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                panel.add(allCells[i][j]);
             }
         }
 
