@@ -12,6 +12,7 @@ public class GameBoardView<cells> {
 
     public static void main(String[] args) {
         GameBoardView game = new GameBoardView();
+        game.score();
         game.gameStatus();
         generateRandomMinedCells(20);
     }
@@ -27,8 +28,9 @@ public class GameBoardView<cells> {
         }
     }
 
+    //Create a new Frame(GameBoard) and grid
     public GameBoardView() {
-        //Create a new Frame(GameBoard)
+
         frame = new JFrame("Minesweeper");
         frame.setVisible(true);
         frame.setSize(350, 350);
@@ -51,17 +53,35 @@ public class GameBoardView<cells> {
         frame.add(panel);
         frame.setVisible(true);
     }
+
+    //Create a score board and Reset button at the top of the screen
+    public void score()
+    {
+        JPanel scorePanel = new JPanel();
+        scorePanel.setBorder(new BevelBorder(BevelBorder.RAISED));
+        frame.add(scorePanel, BorderLayout.NORTH);
+        scorePanel.setPreferredSize(new Dimension(frame.getWidth(), 50));
+        scorePanel.setLayout(new BoxLayout(scorePanel, BoxLayout.X_AXIS));
+        JLabel scoreLabel = new JLabel("SCORE :");
+        scorePanel.add(scoreLabel);
+
+        JButton reset = new JButton("RESET");
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.add(reset, BorderLayout.EAST);
+        scorePanel.add(bottomPanel, BorderLayout.PAGE_END);
+    }
+
+    //Create a status Label to be display the Game Status - WIN/LOSE
     public void gameStatus()
     {
         JPanel statusPanel = new JPanel();
         statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
         frame.add(statusPanel, BorderLayout.SOUTH);
         statusPanel.setPreferredSize(new Dimension(frame.getWidth(), 30));
-        statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
         JLabel statusLabel = new JLabel("Status");
-        statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
         statusPanel.add(statusLabel);
-
+        //statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        //statusLabel.setVerticalAlignment(SwingConstants.CENTER);
         frame.setVisible(true);
     }
 }
